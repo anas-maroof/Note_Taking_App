@@ -30,9 +30,50 @@ The element prop in the parent <Route> component contains the nested routes. It 
 
 In summary, this code sets up a basic navigation structure for a React application using React Router. The main route renders the Home component, and there are nested routes for "/home", "/add", and "/edit/:id", each rendering a different component when their respective paths are matched.
 
-6) Now we make HomePage Header. Very simple only basic CSS. To get currentDate we use 'new Date()', to get day we use ' currentDate.toLocalDateString ( 
-'default', {weekdays : 'long'});'.
+6) Now we make HomePage Header. Very simple only basic CSS. To get currentDate, Day, Month we use :
+   const currentDate = new Date();
+   const day = currentDate.toLocaleDateString('default', {weekday: 'long'});
+   const month = currentDate.toLocaleString('default', {month: 'long'});
+   const date = `${day}, ${month} ${currentDate.getDate()}, ${currentDate.getFullYear()}`;
 
+   In left side we wish : Good Morning and etc. by using the currentHours and use if else condition and then we use useEffect to update the greeting text.
+   In right side we print today's data by simple useState and the syntax which are written above.
+
+7) We install 'npm install react-icon --save'. And then import these files in SideBar :
+   import {AiFillHome} from "react-icons/ai";
+   import {BsPlusLg} from "react-icons/bs";
+   import {MdNoteAlt} from "react-icons/md";
+
+This imports the AiFillHome icon from the "react-icons/ai" library.
+The AiFillHome icon is part of the Ai Icons library and is designed to represent a filled home icon.
+You can use this icon in your React components by rendering it as a component.
+BsPlusLg from "react-icons/bs":
+
+This imports the BsPlusLg icon from the "react-icons/bs" library.
+The BsPlusLg icon is part of the Bootstrap Icons library and represents a larger version of the plus (+) icon.
+Similar to the first case, you can use this icon as a React component in your application.
+MdNoteAlt from "react-icons/md":
+
+This imports the MdNoteAlt icon from the "react-icons/md" library.
+The MdNoteAlt icon is part of the Material Design Icons library and represents an alternative version of a note icon.
+As with the other icons, you can use this in your React components.
+
+
+const location = useLocation();
+let pathname = location.pathname.replace("/", "");
+
+Let's break it down:
+
+const location = useLocation();:
+
+The useLocation hook is part of the React Router library. It returns an object that represents the current location of the application.
+The location object typically includes properties like pathname, search, hash, state, etc.
+let pathname = location.pathname.replace("/", "");:
+
+location.pathname represents the path of the current URL. For example, if the URL is "http://example.com/some/path", location.pathname would be "/some/path".
+The replace("/", "") method is used to remove the leading "/" from the pathname. This is done by replacing the first occurrence of "/" with an empty string.
+The result is that pathname will contain the path without the leading "/" character.
+So, if location.pathname is "/example", after the code execution, pathname will be "example". This can be useful if you want to remove a leading slash from the path for further processing or display in your application.
 
 
 
