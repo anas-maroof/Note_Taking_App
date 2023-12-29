@@ -1,0 +1,46 @@
+                                                        Tutorial For Note Taking App
+
+1) First we create a folder "14_Note_Taking_App" and open terminal and give command 'npx install create-react-app my-app'.
+2) Now remove waste files in src folder and edit index.js and app.js. And make it very simple and remove all waste commands and libraries.
+3) Now 'npm i sass' and download scss Style(Styling almost same as css). And now edit name of App.css to App.scss . And write the code of App.scss of basic 
+   styling command. 
+4) Now make all folders and Files that are going to be used in this project. Carefull add each folder and ther respective .js and .scss file in it. Make only
+   boiler plate on each .js file and write some styling code in .scss file.
+5) Now we create our App.js file and make a Browser Route that render each page.
+
+   Chat GPT explanation of this part :
+   
+   <BrowserRouter>: This component is a part of React Router and provides the context for routing. It enables the use of routing features in your application.  	In other words, it sets up the environment for client-side routing.
+
+<Routes>: This component is used to define the routes for your application. It is used to encapsulate a set of route definitions.
+
+<Route>: This component is used to declare a route. It takes several props, and in your code, it's used to define the route hierarchy.
+
+	path="/": This sets the path for the parent route to "/".
+	element={<Home />}: This specifies the component that should be rendered when the path matches the given route. In this case, the Home component will 	be rendered.
+Inside this parent route, there are nested <Route> components:
+
+	path="/home": This sets up a nested route under the parent route with the path "/home". The Notes component will be rendered when this route 	is 	matched.
+
+	path="/add": This sets up another nested route under the parent route with the path "/add". The AddNote component will be rendered when this route is 	matched.
+
+	path="/edit/:id": This is a dynamic route using a parameter (:id). It means that the route will match any path that starts with "/edit/" followed by 	some value, which will be available as a parameter named id. The EditNote component will be rendered when this route is matched.
+
+The element prop in the parent <Route> component contains the nested routes. It uses React's {} syntax to embed JSX elements.
+
+In summary, this code sets up a basic navigation structure for a React application using React Router. The main route renders the Home component, and there are nested routes for "/home", "/add", and "/edit/:id", each rendering a different component when their respective paths are matched.
+
+6) Now we make HomePage Header. Very simple only basic CSS. To get currentDate we use 'new Date()', to get day we use ' currentDate.toLocalDateString ( 
+'default', {weekdays : 'long'});'.
+
+
+
+
+
+
+
+
+
+
+
+ 
