@@ -75,6 +75,9 @@ The replace("/", "") method is used to remove the leading "/" from the pathname.
 The result is that pathname will contain the path without the leading "/" character.
 So, if location.pathname is "/example", after the code execution, pathname will be "example". This can be useful if you want to remove a leading slash from the path for further processing or display in your application.
 
+This pathname technique is use to open other pages. It's use an anchor type. When you click on Home you change the link from 'localhost : 3000' to 
+'localhost : 3000/home' and it direct us to Home page. Same function goes for Edit PaGe. And third link is to redirect us to Save Notes.
+
 
 
 
