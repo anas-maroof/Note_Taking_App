@@ -215,6 +215,64 @@ It updates the formData state with the latest values.
 
 These parts collectively enable the AddNoteForm component to manage form data, validate inputs, and update the Redux store when the form can be saved.
 
+9) Now we create helpers.js to locallyStore our notes or fetch out locallyStore notes.
+
+This code defines two utility functions in JavaScript that interact with the browser's localStorage. localStorage is a web storage object that allows you to store key-value pairs in a web browser with no expiration time.
+
+fetchFromLocalStorage function:
+Parameters: itemName - a string representing the key under which data is stored in the localStorage.
+Functionality:
+It retrieves the data stored in localStorage under the specified key (itemName).
+It checks if the retrieved data is not null or undefined.
+If data is found, it parses the JSON string into a JavaScript object using JSON.parse and returns the parsed object.
+If no data is found (or if it's not a valid JSON string), it returns an empty array ([]).
+
+storeInLocalStorage function:
+Parameters:
+itemName - a string representing the key under which data is to be stored in the localStorage.
+data - the data (usually an object or an array) to be stored in localStorage.
+Functionality:
+It stores the provided data as a JSON string in localStorage under the specified key (itemName).
+The data is converted to a JSON string using JSON.stringify before storing it.
+
+10) Now we update removeFunction in NoteSlice.js and add this functionality in onClick in <imCancelCircle />.
+
+Here's a step-by-step explanation:
+
+const tempId = action.payload;: Extracts the note ID from the action payload. The assumption here is that the action object has a payload property containing the ID of the note to be removed.
+
+const tempNotes = state.notes.filter(note => note.noteId !== tempId);: Creates a new array (tempNotes) by filtering out the note with the specified ID (tempId) from the state.notes array. This is done using the filter function, which returns a new array containing only the elements that satisfy the given condition.
+
+state.notes = tempNotes;: Updates the application state by replacing the existing state.notes array with the filtered array (tempNotes). This assumes that state is mutable and can be modified directly.
+
+storeInLocalStorage('notes', tempNotes);: Calls the storeInLocalStorage function (which you provided earlier) to update the notes in localStorage. It stores the filtered notes (tempNotes) under the key 'notes'.
+   
+11) Now we update editNotePage function. 
+
+editNote(state, action) {
+    // Destructuring properties from the action payload
+    const { noteId, noteTitle, noteContent } = action.payload;
+
+    // Mapping over the state.notes array to find and update the matching note
+    const tempNotes = state.notes.map(note => {
+        if (note.noteId === noteId) {
+            // Updating the properties of the matching note
+            note.noteTitle = noteTitle;
+            note.noteContent = noteContent;
+            note.noteDate = new Date().toISOString();
+        }
+        return note;
+    });
+
+    // Updating the state with the modified notes
+    state.notes = tempNotes;
+
+    // Storing the updated notes in localStorage
+    storeInLocalStorage('notes', tempNotes);
+}
+
+12) Now updated SingleNotePage and check this function on 'Read More...' button.
+
 
 
 
