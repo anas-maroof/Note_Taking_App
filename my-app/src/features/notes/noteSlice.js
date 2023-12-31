@@ -18,10 +18,14 @@ const noteSlice = createSlice({
             newPost.noteDate = new Date().toISOString();
             state.notes.push(newPost);
             // storeInLocalStorage('notes', state.notes);
+        },
+        
+        removeNote(state, action){
+
         }
     }
 });
 
-export const { addNewNote} = noteSlice.actions;
-// export const getAllNotes = (state) => state.notes.notes;
+export const { addNewNote, removeNote} = noteSlice.actions;
+export const getAllNotes = (state) => state.notes.notes;
 export default noteSlice.reducer;
