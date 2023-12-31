@@ -3,7 +3,7 @@ import { v4 as uuid } from "uuid";
 import {storeInLocalStorage, fetchFromLocalStorage} from "../../utils/helpers";
 
 const initialState = {
-    notes: [],
+    notes: fetchFromLocalStorage('notes'),
     error: null,
     count: 0
 }
@@ -22,7 +22,10 @@ const noteSlice = createSlice({
         },
         
         removeNote(state, action){
-
+            const tempId = action.payload;
+            const tempNotes = state.notes.filter(note => note.noteId !== tempId);
+            state.notes = tempNotes;
+            storeInLocalStorage('notes', tempNotes);
         }
     }
 });
