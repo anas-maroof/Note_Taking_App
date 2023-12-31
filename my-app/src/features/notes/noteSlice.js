@@ -1,5 +1,6 @@
 import { createSlice} from "@reduxjs/toolkit";
 import { v4 as uuid } from "uuid";
+import {storeInLocalStorage, fetchFromLocalStorage} from "../../utils/helpers";
 
 const initialState = {
     notes: [],
@@ -17,7 +18,7 @@ const noteSlice = createSlice({
             let newPost = {noteId, noteTitle, noteContent};
             newPost.noteDate = new Date().toISOString();
             state.notes.push(newPost);
-            // storeInLocalStorage('notes', state.notes);
+            storeInLocalStorage('notes', state.notes);
         },
         
         removeNote(state, action){

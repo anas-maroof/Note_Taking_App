@@ -1,11 +1,15 @@
                                                         Tutorial For Note Taking App
 
 1) First we create a folder "14_Note_Taking_App" and open terminal and give command 'npx install create-react-app my-app'.
+
 2) Now remove waste files in src folder and edit index.js and app.js. And make it very simple and remove all waste commands and libraries.
+
 3) Now 'npm i sass' and download scss Style(Styling almost same as css). And now edit name of App.css to App.scss . And write the code of App.scss of basic 
-   styling command. 
-4) Now make all folders and Files that are going to be used in this project. Carefull add each folder and ther respective .js and .scss file in it. Make only
+   styling command.
+ 
+4) Now make all folders and Files that are going to be used in this project. Carefull add each folder and ther respective .js and .scss file in it. Make   	only
    boiler plate on each .js file and write some styling code in .scss file.
+
 5) Now we create our App.js file and make a Browser Route that render each page.
 
    Chat GPT explanation of this part :
@@ -78,20 +82,147 @@ So, if location.pathname is "/example", after the code execution, pathname will 
 This pathname technique is use to open other pages. It's use an anchor type. When you click on Home you change the link from 'localhost : 3000' to 
 'localhost : 3000/home' and it direct us to Home page. Same function goes for Edit PaGe. And third link is to redirect us to Save Notes.
 
-8) Now we work on NotesPage.js and NotesList.js
+8) Now, we install two more dependencies : 'npm install react-redux' and 'npm install @reduxjs/toolkit'.
+   Now we open store.js and write this code : 
 
-import { useSelector } from "react-redux";:
-This line imports the useSelector hook from the react-redux library.
-useSelector is a hook used in functional components to extract and access the state from the Redux store.
+   import {configureStore} from "@reduxjs/toolkit";
+   import notesReducer from "../features/notes/noteSlice";
 
-import { parseISO, formatDistanceToNow } from 'date-fns';:
-This line imports two functions, parseISO and formatDistanceToNow, from the date-fns library.
-parseISO is used to parse a string representing a date in ISO format (e.g., "2022-01-01T12:00:00Z") into a JavaScript Date object.
-formatDistanceToNow is used to format the difference between a given date and the current date as a human-readable string (e.g., "2 days ago").
+   export const store = configureStore({
+       reducer: {
+           notes: notesReducer
+       }
+   })
 
-   In NotesPage.js we simply return NotesList.
-   In NotesList we simple give command if there is note return no note found. Otherwise we show only 80 letters of title and 150 letters of content.
-   and alsov add different icon of removeNotes, editNotes and read More section which provide us to read full note.
+Explanation of this code : 
+
+import {configureStore} from "@reduxjs/toolkit";:
+This line imports the configureStore function from the Redux Toolkit library. Redux Toolkit provides utilities to simplify the Redux development process.
+
+import notesReducer from "../features/notes/noteSlice";:
+This line imports a reducer function (notesReducer) from a file located at "../features/notes/noteSlice". It's common to organize reducers into separate files, and it seems that the noteSlice.js file contains the reducer related to notes.
+
+export const store = configureStore({ reducer: { notes: notesReducer } });:
+This code exports a Redux store instance named store. The store is created using the configureStore function.
+The configureStore function takes an object as an argument with a reducer property. In this case, it specifies a single reducer for the store under the key notes. The notesReducer is responsible for handling actions related to notes.
+
+
+In summary, this code sets up a Redux store with a single reducer (notesReducer) using the Redux Toolkit's configureStore function. The store is exported and can be used in your React application to manage the state of your notes using the principles of Redux. When actions are dispatched, the corresponding reducer (notesReducer) will handle them and update the state accordingly.
+
+Now, we import this file in index.js and also import {Provider} from react-redux. In provider section we give out <App />.
+The Provider wraps the root component (App), and it provides the Redux store to all components in the application. This way, any component can access the global state managed by Redux and dispatch actions to modify that state.
+
+<Provider store={store}>
+    < App />
+</Provider>
+The store prop is passed to the <Provider> component, specifying the Redux store that should be used for state management in the React application.
+The store prop should reference the Redux store instance created using createStore or configureStore from the redux or @reduxjs/toolkit library.
+
+9) Now we add new function in noteSlice.js name as 'addNewNote'. First we have to import some dependencies :
+   
+import { createSlice } from "@reduxjs/toolkit";:
+This line is importing the createSlice function from the @reduxjs/toolkit library.
+createSlice is a utility function provided by Redux Toolkit to simplify the process of creating Redux slices, which include reducer functions, actions, and action creators.
+
+import { v4 as uuid } from "uuid";:
+This line is importing the v4 function from the uuid library.
+uuid is used to generate unique identifiers. In this case, it's commonly used to assign unique IDs to items in a Redux state, such as unique IDs for notes or other entities.
+
+The 'addNewNote' function works on these steps :
+
+createSlice function:
+The createSlice function is a utility provided by Redux Toolkit to simplify the process of creating Redux slices.
+It takes an object with properties like name, initialState, and reducers.
+
+name: 'notes':
+This sets the name of the slice to 'notes'. This name is used to automatically generate action types based on the names of the reducers.
+
+initialState:
+The initialState is not provided in the code snippet, but it should be defined somewhere in your code. It represents the initial state of the slice.
+
+reducers:
+The reducers property is an object that contains one or more reducer functions. Each key-value pair in this object represents a separate reducer.
+
+addNewNote reducer:
+This code defines a single reducer function named addNewNote within the reducers object.
+The addNewNote reducer takes two arguments: state and action.
+It destructures the payload from the action, assuming that the payload contains noteTitle and noteContent.
+It generates a unique noteId using the uuid library.
+It creates a new note object (newPost) with noteId, noteTitle, and noteContent.
+It adds a noteDate property to the note, representing the date and time the note was created.
+It then pushes the new note object into the notes array in the Redux state.
+
+Note about state.notes.push(newPost):
+This assumes that the Redux slice's state has a property named notes, which is an array. The new note is added to this array.
+
+In summary, this code defines a Redux slice named 'notes' with a single reducer (addNewNote). The addNewNote reducer is responsible for adding a new note to the array of notes in the Redux state.
+
+10) Now we create 'AddNoteForm.js'. First we import some important dependencies :
+    
+import { useDispatch } from 'react-redux';:
+This line is importing the useDispatch hook from the react-redux library.
+The useDispatch hook is used in functional components to get access to the Redux store's dispatch function. It allows components to dispatch actions to the Redux store.
+
+import 'react-toastify/dist/ReactToastify.css';:
+This line is importing the styles for the react-toastify library.
+The ReactToastify.css file contains the necessary CSS styles to display toast notifications. Toast notifications are a way to show non-intrusive messages or alerts to the user.
+
+import { ToastContainer, toast } from 'react-toastify';:
+This line is importing components from the react-toastify library.
+ToastContainer is a React component that provides a container for displaying toast notifications.
+toast is a function that can be used to trigger toast notifications programmatically.
+
+Certainly, let's dive into more detail on the working of each part:
+
+Redux useDispatch Hook:
+const dispatch = useDispatch(); initializes the dispatch function, which is a hook provided by react-redux to dispatch actions to the Redux store.
+
+Form Data State (formData):
+const [formData, setFormData] = useState({ noteTitle: "", noteContent: "" }); initializes a state variable formData to manage the data entered into the form, specifically noteTitle and noteContent.
+
+Error States (titleError and contentError):
+const [titleError, setTitleError] = useState(false); and const [contentError, setContentError] = useState(false); are states to manage validation errors for the title and content inputs.
+
+Form Save State (canSave):
+const [canSave, setCanSave] = useState(false); is a state variable indicating whether the form can be saved. It's updated based on validation criteria.
+onFormDataChange Function:
+
+const onFormDataChange = (event) => {...} is a function called when the form data changes.
+It first checks if the change is in noteTitle or noteContent.
+If it's noteTitle, it checks if the input is empty, sets the titleError accordingly, and updates canSave.
+If it's noteContent, it follows a similar process for content validation.
+In both cases, it updates the formData state to reflect the latest input values.
+Here's an expanded explanation of the working of each part:
+
+Use of dispatch:
+dispatch is used to dispatch actions to the Redux store. In this component, it's likely used to dispatch actions like addNewNote that will update the Redux state with the new note.
+
+Form Data Management:
+formData state is used to keep track of the data entered into the form (noteTitle and noteContent). It's managed by the setFormData function.
+
+Error State Management:
+titleError and contentError states are used to track whether there are validation errors for the title and content inputs. These states are updated based on the user's input.
+
+Form Save State (canSave):
+canSave is a state variable indicating whether the form can be saved. It's updated based on validation criteria. If either the title or content is empty, canSave is set to false.
+
+onFormDataChange Function:
+onFormDataChange is a function that handles changes in form data.
+It checks which input field is being changed and performs validation specific to that field.
+It sets error states (titleError and contentError) based on validation results.
+It updates canSave to allow saving only if both title and content are non-empty.
+It updates the formData state with the latest values.
+
+These parts collectively enable the AddNoteForm component to manage form data, validate inputs, and update the Redux store when the form can be saved.
+
+
+
+
+
+
+
+
+
 
 
 
